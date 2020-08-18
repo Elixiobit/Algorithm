@@ -1,0 +1,7 @@
+# Default ignored files
+.idea/
+node_modules/
+*.sass
+*.css.map
+img/
+speedTest.php
