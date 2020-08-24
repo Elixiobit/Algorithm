@@ -1,49 +1,81 @@
 <?php
-//Дан массив из n элементов, начиная с 1. Каждый следующий элемент равен (предыдущий + 1).
+//1 Дан массив из n элементов, начиная с 1. Каждый следующий элемент равен (предыдущий + 1).
 // Но в массиве гарантированно 1 число пропущено. Необходимо вывести на экран пропущенное число.
-//Примеры:
-/*[1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16] => 11
-[1, 2, 4, 5, 6] => 3
-[] => 1*/
-$array = [1,2,4,5/*,6,7,8,9,10,11,12,13,14,15,16,17,18,20,21,22,23,24,25,26,27,28,29,30,31,32,33*/];
-
-$start = 0;
-//$end = $array[count($array) - 1];
-$end = count($array) - 1;
-//$n = 0;
-
-while ($start < $end){
-    $base = floor(($start + $end) / 2);
-    echo $base . PHP_EOL;
-    echo $array[$base] . PHP_EOL;
-    $x = 0;
-
+//[1, 2 ,3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16] => 11
+//[1, 2, 4, 5, 6] => 3
+//[] => 1
+function getDensity ($array, $start, $end) {
+    return ($end - $start)/($array[$end] - $array[$start]);
+}
+function getMiddle ($start,$end){
+    return floor(($start + $end) / 2);
+}
+function getResult ($result, $n, $n2 = 0) {
+    $nN = $n + $n2;
+    echo "Искомое значение: $result";
     echo PHP_EOL;
-    $left = ($end - $base)/($array[$end] - $array[$base]);
-    $right = ($base - $start)/($array[$base] - $array[$start]);
-
-
-    if ($left == 1 || $right == 1){
-        $num = $array[$base] + 1;
-        echo "искомое число: $num";
-    };
-    exit;
-    if (($array[$base] - $array[$start]) == 2){
-        $num = $start + 1;
-        echo "искомое число: $num";
+    echo "Количество инреаций: $nN";
+    echo PHP_EOL;
+}
+function emptyPosition (){
+    $array = [1, 2 ,3, 4, 6, 7, 8, 9, 10, 11, 12, 13,14, 15, 16,17,18,19,20,21,22,23,24,25,26,27,28];
+    $start = 0;
+    $n = 0;
+    $n2 = 0;
+    $end = count($array) - 1;
+    while (($end - $start) > 1 &&  !empty($array)){
+        $n++;
+        $middle = getMiddle($start, $end);
+        $left = getDensity($array, $start, $middle);
+        if ($left == 1) {
+            $start = $middle;
+        } else{
+            $end = $middle;
+        }
     }
-//    if (($base - $start) == 0){
-//
-//    }
-    if ($left == 1){
-//        $end = $base - 1;
-        $start = $base + 1;
-        $x = 1;
-    } else {
-//        $start = $base + 1;
-        $end = $base - 1;
-        $x = 2;
-    };
-
+    if (empty($array)){
+        getResult(1, $n);
+    }elseif (($array[$start] - 1)!= $start) {
+        getResult(($array[$start] - 1), $n, $n2);
+    }else {
+        getResult(($array[$end] - 1), $n, $n2);
+    }
 }
 
+//3*. Доработать алгоритм бинарного поиска для нахождения кол-ва повторений в массиве.
+// Сложность O(logn) не должна измениться. Учтите, что массив длиной n может состоять
+// из одного значения [4, 4, 4, 4, ...(n)..., 4]
+
+
+$myArray = [1, 2 ,3, 4, 5,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,15, 16,17,18,19,20,21,21,22,23,24,25,26,27];
+//$myArray = [5,5,5,5,5,5,5,5,5];
+$start = 0;
+$end = count($myArray) - 1;
+function binarySearch($array, $start, $end, $num = 5)
+{
+    $n = 0;
+    $repeat = 0;
+    while ($start <= $end) {
+        $n++;
+        $base = getMiddle($start, $end);
+        if ($array[$base] == $num) {
+            $repeat++;
+            array_splice($array, $base, 1);
+            $end = count($array) - 1;
+        } elseif ($array[$base] < $num) {
+            $start = $base + 1;
+        } else {
+            $end = $base - 1;
+        }
+    }
+    echo "Количество итераций: $n искомого числа $num" . PHP_EOL;
+    echo "Количество повтрений: $repeat" . PHP_EOL;
+}
+$startTime = microtime(true);
+$before = memory_get_usage();
+//emptyPosition(); // запуск первой задачи.
+binarySearch($myArray, $start, $end); // запуск третей задачи.
+echo (microtime(true) - $startTime);
+echo PHP_EOL;
+echo memory_get_usage() - $before;
+echo PHP_EOL;
