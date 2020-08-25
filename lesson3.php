@@ -18,7 +18,7 @@ function getResult ($result, $n, $n2 = 0) {
     echo PHP_EOL;
 }
 function emptyPosition (){
-    $array = [1, 2 ,3, 4, 6, 7, 8, 9, 10, 11, 12, 13,14, 15, 16,17,18,19,20,21,22,23,24,25,26,27,28];
+    $array = [1, 2 ,3, 4,5, 7, 8, 9, 10, 11, 12, 13,14, 15, 16,17,18,19,20,21,22,23,24,25,26,27,28];
     $start = 0;
     $n = 0;
     $n2 = 0;
@@ -41,17 +41,16 @@ function emptyPosition (){
         getResult(($array[$end] - 1), $n, $n2);
     }
 }
+//end
 
 //3*. Доработать алгоритм бинарного поиска для нахождения кол-ва повторений в массиве.
 // Сложность O(logn) не должна измениться. Учтите, что массив длиной n может состоять
 // из одного значения [4, 4, 4, 4, ...(n)..., 4]
-
-
 $myArray = [1, 2 ,3, 4, 5,5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,15, 16,17,18,19,20,21,21,22,23,24,25,26,27];
 //$myArray = [5,5,5,5,5,5,5,5,5];
 $start = 0;
 $end = count($myArray) - 1;
-function binarySearch($array, $start, $end, $num = 5)
+function binarySearchUpgrade($array, $start, $end, $num = 5)
 {
     $n = 0;
     $repeat = 0;
@@ -71,10 +70,40 @@ function binarySearch($array, $start, $end, $num = 5)
     echo "Количество итераций: $n искомого числа $num" . PHP_EOL;
     echo "Количество повтрений: $repeat" . PHP_EOL;
 }
+//end
+
+//4 Реализовать на РНР сортировку слиянием.
+function myArray () {
+    $myArray = [];
+    for ($i= 0; $i < 10; $i++) {
+        $num = mt_rand(1, 10);
+        if (in_array($num, $myArray)) continue;
+        else array_push($myArray, $num);
+
+    }
+	return $myArray;
+}
+$myArray_3 = myArray();
+function buildMerge (array $myArray_3) {
+    $middle = floor((count($myArray_3) - 1)/2);
+    echo "$middle";
+    var_dump($myArray_3);
+    $left = array_slice($myArray_3, 0, $middle);
+    $right = array_slice($myArray_3, $middle);
+
+    var_dump($left);
+    var_dump($right);
+}
+buildMerge($myArray_3);
+//end
+
+
+
+
 $startTime = microtime(true);
 $before = memory_get_usage();
 //emptyPosition(); // запуск первой задачи.
-binarySearch($myArray, $start, $end); // запуск третей задачи.
+//binarySearchUpgrade($myArray, $start, $end); // запуск третей задачи.
 echo (microtime(true) - $startTime);
 echo PHP_EOL;
 echo memory_get_usage() - $before;
